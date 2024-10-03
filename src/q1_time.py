@@ -5,6 +5,8 @@ from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, count, date_format, row_number
 from pyspark.sql.window import Window
 
+import cProfile
+
 def q1_time(file_path: str) -> List[Tuple[datetime.date, str]]:
     # Se inicia la sesión de Pyspark
     spark = SparkSession.builder.appName("LatamChallenge").getOrCreate()
@@ -36,3 +38,6 @@ def q1_time(file_path: str) -> List[Tuple[datetime.date, str]]:
 
     return result_list 
 
+
+if __name__ == "__main__":
+    cProfile.run('q1_time("farmers-protest-tweets-2021-2-4.json")')

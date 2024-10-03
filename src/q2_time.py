@@ -5,6 +5,8 @@ from pyspark.sql.functions import col, explode, split
 from collections import Counter
 import re
 
+import cProfile 
+
 def extract_emojis(text):
     # Se utiliza la misma función para identificar los emojis
     emoji_pattern = re.compile("["
@@ -28,3 +30,6 @@ def q2_time(file_path: str) -> List[Tuple[str, int]]:
     top_emojis = emoji_counts.takeOrdered(10, key=lambda x: -x[1])
 
     return top_emojis
+
+if __name__ == "__main__":
+    cProfile.run('q2_time("farmers-protest-tweets-2021-2-4.json")')

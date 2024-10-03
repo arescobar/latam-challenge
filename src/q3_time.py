@@ -4,6 +4,8 @@ from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, explode
 from collections import Counter
 
+import cProfile 
+
 def extract_mentions(users):
     # Función que se ocupa de extraer los usuarios mencionados. 
     # En caso de que no existan, retorna vacío.
@@ -25,3 +27,6 @@ def q3_time(file_path: str) -> List[Tuple[str, int]]:
     top_mentions = mention_counts.takeOrdered(10, key=lambda x: -x[1])
 
     return top_mentions
+
+if __name__ == "__main__":
+    cProfile.run('q3_time("farmers-protest-tweets-2021-2-4.json")')

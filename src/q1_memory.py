@@ -6,7 +6,9 @@ from pyspark.sql.functions import col, count, date_format, row_number
 from pyspark.sql.window import Window
 from typing import List, Tuple
 import datetime
+from memory_profiler import profile
 
+@profile
 def q1_memory(file_path: str) -> List[Tuple[datetime.date, str]]:
     # Se inicia la sesión en pyspark 
     spark = SparkSession.builder.appName("LatamChallenge").getOrCreate()
@@ -37,3 +39,6 @@ def q1_memory(file_path: str) -> List[Tuple[datetime.date, str]]:
     # Se retorna una tupla con el resultado
     result_list = [(row['created_at_date'], row['username']) for row in top_result.collect()]
     return result_list
+
+
+q1_memory("farmers-protest-tweets-2021-2-4.json")

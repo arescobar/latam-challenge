@@ -4,12 +4,15 @@ from pyspark.sql import SparkSession
 from collections import Counter
 import re
 
+from memory_profiler import profile
+
 def extract_mentions(users):
     # Función para extraer los usuarios necesarios
     if users is not None:
         return [user['username'] for user in users]
     return []
 
+@profile
 def q3_memory(file_path: str) -> List[Tuple[str, int]]:
     # Sesión de spark
     spark = SparkSession.builder.appName("LatamChallenge").getOrCreate()
@@ -29,3 +32,5 @@ def q3_memory(file_path: str) -> List[Tuple[str, int]]:
     top_mentions = mention_counter.most_common(10)
 
     return top_mentions
+
+q3_memory("farmers-protest-tweets-2021-2-4.json")
