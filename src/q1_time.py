@@ -35,3 +35,4 @@ def q1_time(file_path: str) -> List[Tuple[datetime.date, str]]:
     result_list = [(row['created_at_date'], row['username']) for row in top_result.collect()]
 
     return result_list 
+
