@@ -18,7 +18,10 @@ def q3_memory(file_path: str) -> List[Tuple[str, int]]:
     spark = SparkSession.builder.appName("LatamChallenge").getOrCreate()
 
     # Se lee el JSON completo y se selecciona solo la columna de usuarios mencionados para optimizar memoria
-    data = spark.read.json(file_path).select('mentionedUsers')
+    try:
+        data = spark.read.json(file_path).select('mentionedUsers')
+    except (FileNotFoundError, IOError) as e:
+        print(f'Error while handling file: {e}')
 
     # Contador para contar cada mención
     mention_counter = Counter()

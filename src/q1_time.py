@@ -8,10 +8,14 @@ from pyspark.sql.window import Window
 import cProfile
 
 def q1_time(file_path: str) -> List[Tuple[datetime.date, str]]:
+    
     # Se inicia la sesión de Pyspark
     spark = SparkSession.builder.appName("LatamChallenge").getOrCreate()
-    # Se lee el archivo y se almacena en un dataframe 
-    data = spark.read.json(file_path)
+    try:
+        # se lee el archivo y se almacena en un dataframe
+        data = spark.read.json(file_path)
+    except (FileNotFoundError, IOError) as e:
+        print(f'Error while handling file: {e}')
 
     # Se convierte la columna de date a fecha.
     data = data.withColumn('created_at_date', date_format(col('date'), 'yyyy-MM-dd'))

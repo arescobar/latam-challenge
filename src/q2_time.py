@@ -21,7 +21,10 @@ def q2_time(file_path: str) -> List[Tuple[str, int]]:
     spark = SparkSession.builder.appName("LatamChallenge").getOrCreate()
 
     # Se lee el archivo JSON completo
-    data = spark.read.json(file_path).select('content')
+    try:
+        data = spark.read.json(file_path).select('content')
+    except (FileNotFoundError, IOError) as e:
+        print(f'Error while handling file: {e}')
     # Se usa un RDD para extraer emojis rápidamente
     emojis_rdd = data.rdd.flatMap(lambda row: extract_emojis(row['content']))
     # Se cuenta la cantidad de veces que aparece cada emoji

@@ -17,7 +17,10 @@ def q3_time(file_path: str) -> List[Tuple[str, int]]:
     spark = SparkSession.builder.appName("LatamChallenge").getOrCreate()
 
     # Se lee el archivo JSON completo y se selecciona solo la columna de usuarios mencionados para optimizar el tiempo
-    data = spark.read.json(file_path).select('mentionedUsers')
+    try:
+        data = spark.read.json(file_path).select('mentionedUsers')
+    except (FileNotFoundError, IOError) as e:
+        print(f'Error while handling file: {e}')
     # Se extraen los nombres de los usuarios
     mentions_rdd = data.rdd.flatMap(lambda row: extract_mentions(row['mentionedUsers']))
     # Se cuentan las veces que ha sido mencionado cada usuario

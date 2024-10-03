@@ -10,11 +10,15 @@ from memory_profiler import profile
 
 @profile
 def q1_memory(file_path: str) -> List[Tuple[datetime.date, str]]:
+    
     # Se inicia la sesión en pyspark 
     spark = SparkSession.builder.appName("LatamChallenge").getOrCreate()
 
-    # Se leen solo las columnas necesarias para reducir el uso de memoria
-    data = spark.read.json(file_path).select('date', 'user.username')
+        # Se leen solo las columnas necesarias para reducir el uso de memoria
+    try:
+        data = spark.read.json(file_path).select('date', 'user.username')
+    except (FileNotFoundError, IOError) as e:
+        print(f'Error while handling file: {e}')
     # Se convierte la columna 'date' a solo la fecha
     data = data.withColumn('created_at_date', date_format(col('date'), 'yyyy-MM-dd'))
     # Se agrupa por fecha y usuario para contar los tweets de cada usuario por día
@@ -41,4 +45,4 @@ def q1_memory(file_path: str) -> List[Tuple[datetime.date, str]]:
     return result_list
 
 
-q1_memory("farmers-protest-tweets-2021-2-4.json")
+#q1_memory("farmers-protest-tweets-2021-2-4.json")

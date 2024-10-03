@@ -5,7 +5,7 @@ from pyspark.sql.functions import explode, col, split, count
 from collections import Counter
 import re
 
-from memory_profiler import profile
+#from memory_profiler import profile
 
 def extract_emojis(text):
     # Función para extraer los emojis de los tweets
@@ -17,12 +17,15 @@ def extract_emojis(text):
                            "]+", flags=re.UNICODE)
     return emoji_pattern.findall(text)
 
-@profile
+#@profile
 def q2_memory(file_path: str) -> List[Tuple[str, int]]:
     spark = SparkSession.builder.appName("LatamChallenge").getOrCreate()
 
     # Nuevamente se lee solo la columna de contenido para reducir el uso de memoria
-    data = spark.read.json(file_path).select('content')
+    try:
+        data = spark.read.json(file_path).select('content')
+    except (FileNotFoundError, IOError) as e:
+        print(f'Error while handling file: {e}')
     # Se filtran los tweets con emojis
     tweets_with_emojis = data.rdd.flatMap(lambda row: extract_emojis(row['content']))
     # Se cuenta la cantidad de veces que aparece cada emoji
@@ -32,4 +35,4 @@ def q2_memory(file_path: str) -> List[Tuple[str, int]]:
 
     return top_emojis
 
-q2_memory("farmers-protest-tweets-2021-2-4.json")
+#q2_memory("farmers-protest-tweets-2021-2-4.json")
