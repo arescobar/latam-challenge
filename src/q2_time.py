@@ -28,4 +28,3 @@ def q2_time(file_path: str) -> List[Tuple[str, int]]:
     top_emojis = emoji_counts.takeOrdered(10, key=lambda x: -x[1])
 
     return top_emojis
-    
