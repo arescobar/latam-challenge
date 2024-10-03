@@ -1,1 +1,10 @@
+
+** SUPUESTOS 
+
+- Se asume que el archivo JSON proporciona tendrá siempre esa estructura y que contiene los campos date, content, user y mentionedUsers.
+- Con respecto a los emojis, se asume que aquellos que se utilizan se encuentran en el campo content de los tweets. 
+
+** Librerías
+pyspark==3.5.1
 memory-profiler==0.61.0
+python==3.9.6
