@@ -1,0 +1,20 @@
+
+** SUPUESTOS 
+
+- Se asume que el archivo JSON proporciona tendrá siempre esa estructura y que contiene los campos date, content, user y mentionedUsers.
+- Con respecto a los emojis, se asume que aquellos que se utilizan se encuentran en el campo content de los tweets. 
+
+** Librerías
+pyspark==3.5.1
+memory-profiler==0.61.0
+python==3.9.6
+
+** Cómo mejorar 
+
+* En la función q2_memory el uso de memoria sube una vez que se utiliza la función flatMap. 
+Una opción de mejora sería implementar alguna técnica que permita extraer los emojis sin generar una alza en la memoria.
+* Siguiendo con q2_memory y también incluyendo a q3_memory, creo que una forma de optimizar esta alza en la memoria, podría ser
+utilizando técnicas de streaming, de manera en que no se carguen grandes cantidades de datos a la vez. Un ejemplo de esto, sería 
+utilizar chunks en pandas, ya que divide el archivo en lotes. Los iteradores de PySpark también pueden ser una buena idea.
+* El manejo de errores se podría mejorar también en las distintas funciones, por ejemplo considerando casos en que se otorguen archivos JSON que estén fuera
+del supuesto considerado y les falten campos. De esta manera, se le solicitaría al usuario que entregue un archivo correcto.
